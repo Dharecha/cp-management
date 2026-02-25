@@ -8,7 +8,7 @@ const Login = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const { login } = useAuth();
-
+  const [inputtype, setinputtype] = useState('password');
   const handleLogin = async (e) => {
     e.preventDefault();
     const result = await login(email, password);
@@ -37,12 +37,12 @@ const Login = () => {
         <div style={{ marginBottom: '15px' }}>
           <label style={{ display: 'block', marginBottom: '5px' }}>Password (Phone Number):</label>
           <input
-            type="password"
+            type={inputtype}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
             style={{ width: '100%', padding: '8px', border: '1px solid #ccc', borderRadius: '4px' }}
-          />
+          /><button type="button" onClick={() => setinputtype(inputtype === 'password' ? 'text' : 'password')} style={{ marginTop: '5px', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '4px', padding: '5px 10px', cursor: 'pointer' }}> Password</button>
         </div>
         <button type="submit" style={{ width: '100%', padding: '10px', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
           Login
