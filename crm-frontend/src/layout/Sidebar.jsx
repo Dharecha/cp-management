@@ -8,7 +8,7 @@ function Sidebar() {
             marginTop: "50px",
             background: "#0c2d48",
             color: "white",
-            height: "100vh",
+
             padding: "20px",
             postion: "fixed",
             top: "100px",
@@ -26,6 +26,7 @@ function Sidebar() {
             <h2>CRM</h2>
 
             <div style={{ marginTop: "30px" }}>
+                <p><Link to="/home" style={{ color: "white" }}>Home</Link></p>
                 <p><Link to="/" style={{ color: "white" }}>Dashboard</Link></p>
                 <p><Link to="/users" style={{ color: "white" }}>Users</Link></p>
                 <p><Link to="/customers" style={{ color: "white" }}>Customers</Link></p>

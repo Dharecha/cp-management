@@ -30,12 +30,29 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 // Add CORS policy
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", builder =>
+    options.AddPolicy("AllowFrontendDev", policy =>
     {
-        builder.WithOrigins("http://localhost:5173", "http://localhost:5174", "http://localhost:5175", "http://localhost:5176", "http://localhost:5177")
-               .AllowAnyMethod()
-               .AllowAnyHeader()
-               .AllowCredentials();
+        policy
+            .SetIsOriginAllowed(origin =>
+            {
+                if (!Uri.TryCreate(origin, UriKind.Absolute, out var uri))
+                {
+                    return false;
+                }
+
+                var isHttp = uri.Scheme == Uri.UriSchemeHttp;
+                var isVitePort = uri.Port >= 5173 && uri.Port <= 5177;
+                var isLocalHost = uri.Host.Equals("localhost", StringComparison.OrdinalIgnoreCase) ||
+                                  uri.Host.Equals("127.0.0.1");
+                var isPrivateLan = uri.Host.StartsWith("10.") ||
+                                   uri.Host.StartsWith("192.168.") ||
+                                   uri.Host.StartsWith("172.");
+
+                return isHttp && isVitePort && (isLocalHost || isPrivateLan);
+            })
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials();
     });
 });
 
@@ -98,7 +115,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 // Enable CORS
-app.UseCors("AllowAll");
+app.UseCors("AllowFrontendDev");
 
 app.UseSession();
 

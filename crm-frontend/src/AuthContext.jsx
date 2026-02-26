@@ -19,6 +19,7 @@ export const AuthProvider = ({ children }) => {
                 credentials: 'include',
             });
             const data = await response.json();
+            console.log(data);
             setIsAuthenticated(data.isAuthenticated);
             setRole(data.role);
         } catch (err) {
